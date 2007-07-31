@@ -3,10 +3,11 @@
 %define papiversion 1.0
 %define papiextraversion svn-r
 %define papisvnrevision 177
-%define papireleaseno 0.%{papisvnrevision}.1
+%define papireleaseno 0.%{papisvnrevision}.2
 %define papirelease %mkrel %papireleaseno
 %define papimajor 0
-%define libpapi %mklibname papi %{papimajor}
+%define libname %mklibname papi %{papimajor}
+%define develname %mklibname papi -d
 
 ##### BUILD OPTIONS
 
@@ -109,7 +110,7 @@ Group: 		System/Servers
 Requires:	apache-base
 %endif
 
-%package -n %libpapi
+%package -n %libname
 Summary: 	FSG OpenPrinting PAPI libraries
 Group: 		System/Servers
 Requires:	papi-common
@@ -117,12 +118,13 @@ Provides:	libpapi.so.%{papimajor}
 Obsoletes:	papi-psm
 Provides:	papi-psm
 
-%package -n %libpapi-devel
-Summary: 	Headers and links to compile against the "%{libpapi}" library
+%package -n %develname
+Summary: 	Headers and links to compile against the "%{libname}" library
 Group:		Development/C
-Requires: 	%{libpapi} = %{version}
-Provides:	libpapi-devel
+Requires: 	%{libname} = %{version}
+Provides:	libpapi.-devel
 Provides:	papi-devel
+Obsoletes:	%{mklibname papi 0 -d}
 
 
 
@@ -174,10 +176,10 @@ PAPI. It's likely nobody will ever need these.
 Apache module to make Apache working as IPP server
 %endif
 
-%description -n %libpapi
+%description -n %libname
 This package contains libraries which provide PAPI implementation
 
-%description -n %libpapi-devel
+%description -n %develname
 This package contains the static library and the header files needed
 to compile applications using the PAPI shared libraries.
 
@@ -353,7 +355,7 @@ cp *.txt ChangeLog INSTALL LICENSE TODO %{buildroot}/%{_docdir}/%{name}-%{versio
 
 ##### PRE/POSTINSTALL SCRIPTS
 
-%post -n %{libpapi}
+%post -n %{libname}
 # Set up update-alternatives entries
 libversion=`\ls %{_libdir}/libpapi-dynamic.so.* | egrep 'so\.%{papimajor}\.[0-9]+\.[0-9]+$' | perl -p -e 's:^.*\.so\.::'`
 %{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-dynamic.so 10 --slave %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-dynamic.so.%{papimajor} --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-dynamic.so.$libversion
@@ -366,22 +368,22 @@ libversion=`\ls %{_libdir}/libpapi-dynamic.so.* | egrep 'so\.%{papimajor}\.[0-9]
 
 %post commands
 # Set up update-alternatives entries
-%{_sbindir}/update-alternatives --install %{_bindir}/lpr lpr %{_bindir}/lpr-papi 100 --slave %{_mandir}/man1/lpr.1.bz2 lpr.1.bz2 %{_mandir}/man1/lpr-papi.1.bz2
-%{_sbindir}/update-alternatives --install %{_bindir}/lpq lpq %{_bindir}/lpq-papi 100 --slave %{_mandir}/man1/lpq.1.bz2 lpq.1.bz2 %{_mandir}/man1/lpq-papi.1.bz2
-%{_sbindir}/update-alternatives --install %{_bindir}/lprm lprm %{_bindir}/lprm-papi 100 --slave %{_mandir}/man1/lprm.1.bz2 lprm.1.bz2 %{_mandir}/man1/lprm-papi.1.bz2
-%{_sbindir}/update-alternatives --install %{_bindir}/lp lp %{_bindir}/lp-papi 100 --slave %{_mandir}/man1/lp.1.bz2 lp.1.bz2 %{_mandir}/man1/lp-papi.1.bz2
-%{_sbindir}/update-alternatives --install %{_bindir}/cancel cancel %{_bindir}/cancel-papi 100 --slave %{_mandir}/man1/cancel.1.bz2 cancel.1.bz2 %{_mandir}/man1/cancel-papi.1.bz2
-%{_sbindir}/update-alternatives --install %{_bindir}/lpstat lpstat %{_bindir}/lpstat-papi 100 --slave %{_mandir}/man1/lpstat.1.bz2 lpstat.1.bz2 %{_mandir}/man1/lpstat-papi.1.bz2
-%{_sbindir}/update-alternatives --install %{_sbindir}/accept accept %{_sbindir}/accept-papi 100 --slave %{_mandir}/man8/accept.8.bz2 accept.8.bz2 %{_mandir}/man8/accept-papi.8.bz2
-%{_sbindir}/update-alternatives --install %{_sbindir}/disable disable %{_sbindir}/disable-papi 100 --slave %{_mandir}/man8/disable.8.bz2 disable.8.bz2 %{_mandir}/man8/disable-papi.8.bz2
-%{_sbindir}/update-alternatives --install %{_sbindir}/enable enable %{_sbindir}/enable-papi 100 --slave %{_mandir}/man8/enable.8.bz2 enable.8.bz2 %{_mandir}/man8/enable-papi.8.bz2
-%{_sbindir}/update-alternatives --install %{_sbindir}/lpc lpc %{_sbindir}/lpc-papi 100 --slave %{_mandir}/man8/lpc.8.bz2 lpc.8.bz2 %{_mandir}/man8/lpc-papi.8.bz2
-%{_sbindir}/update-alternatives --install %{_sbindir}/lpmove lpmove %{_sbindir}/lpmove-papi 100 --slave %{_mandir}/man8/lpmove.8.bz2 lpmove.8.bz2 %{_mandir}/man8/lpmove-papi.8.bz2
-%{_sbindir}/update-alternatives --install %{_sbindir}/reject reject %{_sbindir}/reject-papi 100 --slave %{_mandir}/man8/reject.8.bz2 reject.8.bz2 %{_mandir}/man8/reject-papi.8.bz2
+%{_sbindir}/update-alternatives --install %{_bindir}/lpr lpr %{_bindir}/lpr-papi 100 --slave %{_mandir}/man1/lpr.1.lzma lpr.1.lzma %{_mandir}/man1/lpr-papi.1.lzma
+%{_sbindir}/update-alternatives --install %{_bindir}/lpq lpq %{_bindir}/lpq-papi 100 --slave %{_mandir}/man1/lpq.1.lzma lpq.1.lzma %{_mandir}/man1/lpq-papi.1.lzma
+%{_sbindir}/update-alternatives --install %{_bindir}/lprm lprm %{_bindir}/lprm-papi 100 --slave %{_mandir}/man1/lprm.1.lzma lprm.1.lzma %{_mandir}/man1/lprm-papi.1.lzma
+%{_sbindir}/update-alternatives --install %{_bindir}/lp lp %{_bindir}/lp-papi 100 --slave %{_mandir}/man1/lp.1.lzma lp.1.lzma %{_mandir}/man1/lp-papi.1.lzma
+%{_sbindir}/update-alternatives --install %{_bindir}/cancel cancel %{_bindir}/cancel-papi 100 --slave %{_mandir}/man1/cancel.1.lzma cancel.1.lzma %{_mandir}/man1/cancel-papi.1.lzma
+%{_sbindir}/update-alternatives --install %{_bindir}/lpstat lpstat %{_bindir}/lpstat-papi 100 --slave %{_mandir}/man1/lpstat.1.lzma lpstat.1.lzma %{_mandir}/man1/lpstat-papi.1.lzma
+%{_sbindir}/update-alternatives --install %{_sbindir}/accept accept %{_sbindir}/accept-papi 100 --slave %{_mandir}/man8/accept.8.lzma accept.8.lzma %{_mandir}/man8/accept-papi.8.lzma
+%{_sbindir}/update-alternatives --install %{_sbindir}/disable disable %{_sbindir}/disable-papi 100 --slave %{_mandir}/man8/disable.8.lzma disable.8.lzma %{_mandir}/man8/disable-papi.8.lzma
+%{_sbindir}/update-alternatives --install %{_sbindir}/enable enable %{_sbindir}/enable-papi 100 --slave %{_mandir}/man8/enable.8.lzma enable.8.lzma %{_mandir}/man8/enable-papi.8.lzma
+%{_sbindir}/update-alternatives --install %{_sbindir}/lpc lpc %{_sbindir}/lpc-papi 100 --slave %{_mandir}/man8/lpc.8.lzma lpc.8.lzma %{_mandir}/man8/lpc-papi.8.lzma
+%{_sbindir}/update-alternatives --install %{_sbindir}/lpmove lpmove %{_sbindir}/lpmove-papi 100 --slave %{_mandir}/man8/lpmove.8.lzma lpmove.8.lzma %{_mandir}/man8/lpmove-papi.8.lzma
+%{_sbindir}/update-alternatives --install %{_sbindir}/reject reject %{_sbindir}/reject-papi 100 --slave %{_mandir}/man8/reject.8.lzma reject.8.lzma %{_mandir}/man8/reject-papi.8.lzma
 
 
 
-%preun -n %{libpapi}
+%preun -n %{libname}
 if [ "$1" = 0 ]; then
   # Remove update-alternatives entries
   %{_sbindir}/update-alternatives --remove libpapi.so %{_libdir}/libpapi-dynamic.so
@@ -410,7 +412,7 @@ fi
 
 
 
-%postun -n %{libpapi} -p /sbin/ldconfig
+%postun -n %{libname} -p /sbin/ldconfig
 
 
 
@@ -464,12 +466,12 @@ rm -rf %{buildroot}
 
 %endif
 
-%files -n %{libpapi}
+%files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
 
-%files -n %{libpapi}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %{_libdir}/lib*.la
 %{_libdir}/pkgconfig/*
