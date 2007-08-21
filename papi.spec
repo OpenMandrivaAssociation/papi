@@ -36,7 +36,7 @@ Version:	%{papiversion}
 Release:	%{papirelease}
 License:	GPL/LPGL/MIT/CDDL
 Group:		System/Servers
-Requires:	/usr/sbin/update-alternatives
+Requires:	update-alternatives
 URL:		http://openprinting.sourceforge.net/
 
 
@@ -80,7 +80,7 @@ Provides:	papi-doc
 %package commands
 Summary:	FSG OpenPrinting PAPI BSD and System V printing commands
 Group: 		System/Servers
-Requires:	/usr/sbin/update-alternatives
+Requires:	update-alternatives
 Conflicts:	cups-common <= 1.2.0-2mdk
 
 %package utils
