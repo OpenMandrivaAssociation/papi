@@ -285,7 +285,7 @@ cat <<EOF >%{buildroot}%{_sysconfdir}/xinetd.d/papi-lpd
 # default: off
 # description: The cups-lpd mini daemon enable cups accepting jobs from a \
 #       remote LPD client (for example a machine with an older distribution \
-#       than Linux Mandrake 7.2 or with a commercial Unix).
+#       than Linux Mandriva 7.2 or with a commercial Unix).
 service papi-lpd
 {
         socket_type     = stream
