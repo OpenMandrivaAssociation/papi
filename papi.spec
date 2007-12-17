@@ -65,7 +65,6 @@ Source0:	http://sourceforge.net/projects/openprinting/papi-%{papiversion}%{papie
 
 ##### BUILD ROOT
 
-BuildRoot:	%_tmppath/%name-%papiversion-%papirelease-root
 
 
 
