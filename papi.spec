@@ -362,7 +362,9 @@ libversion=`\ls %{_libdir}/libpapi-dynamic.so.* | egrep 'so\.%{papimajor}\.[0-9]
 %{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-ipp.so 30 --slave %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-ipp.so.%{papimajor} --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-ipp.so.$libversion
 %{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-lpd.so 20 --slave %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-lpd.so.%{papimajor} --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-lpd.so.$libversion
 
+%if %mdkversion < 200900
 /sbin/ldconfig
+%endif
 
 
 
@@ -412,7 +414,9 @@ fi
 
 
 
+%if %mdkversion < 200900
 %postun -n %{libname} -p /sbin/ldconfig
+%endif
 
 
 
