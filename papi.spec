@@ -276,7 +276,7 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 ##### PAPI
 
 %makeinstall \
-	ruby_sitearchdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*/*-linux-gnu*` \
+	ruby_sitearchdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*/*-linux` \
 	ruby_sitelibdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*`
 
 # entry for xinetd (disabled by default)
