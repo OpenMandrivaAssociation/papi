@@ -3,7 +3,7 @@
 %define papiversion 1.0
 %define papiextraversion svn-r
 %define papisvnrevision 177
-%define papireleaseno 0.%{papisvnrevision}.4
+%define papireleaseno 0.%{papisvnrevision}.5
 %define papirelease %mkrel %papireleaseno
 %define papimajor 0
 %define libname %mklibname papi %{papimajor}
@@ -56,6 +56,7 @@ BuildRequires: ruby-devel
 Source0:	http://sourceforge.net/projects/openprinting/papi-%{papiversion}%{papiextraversion}%{papisvnrevision}.tar.bz2
 
 ##### PAPI PATCHES
+Patch0:		papi_http.patch
 
 # Fixed acinclude.m4 so that it is also checked for the apr.h file of
 # libapr-1 which is needed by the Apache headers
@@ -193,6 +194,7 @@ rm -rf $RPM_BUILD_DIR/papi
 ##### PAPI
 
 %setup -q -n papi
+%patch0 -p1
 #patch1 -p0 -b .apache-apr1
 
 # Let other names be used for the libraries, to express that they work all
