@@ -63,6 +63,7 @@ Patch0:		papi_http.patch
 #Patch1:		papi-1.0-acinclude-m4-apache-apr1.patch.bz2
 
 Patch2:		papi-strndup.patch
+Patch3:		papi-installonce.patch
 
 
 ##### BUILD ROOT
@@ -198,6 +199,7 @@ rm -rf $RPM_BUILD_DIR/papi
 %patch0 -p1
 #patch1 -p0 -b .apache-apr1
 %patch2 -p1
+%patch3 -p1 -b .installonce
 
 # Let other names be used for the libraries, to express that they work all
 # directly as a libpapi and not only as plug-ins for libpapi-dynamic.
