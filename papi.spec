@@ -62,6 +62,7 @@ Patch0:		papi_http.patch
 # libapr-1 which is needed by the Apache headers
 #Patch1:		papi-1.0-acinclude-m4-apache-apr1.patch.bz2
 
+Patch2:		papi-strndup.patch
 
 
 ##### BUILD ROOT
@@ -196,6 +197,7 @@ rm -rf $RPM_BUILD_DIR/papi
 %setup -q -n papi
 %patch0 -p1
 #patch1 -p0 -b .apache-apr1
+%patch2 -p1
 
 # Let other names be used for the libraries, to express that they work all
 # directly as a libpapi and not only as plug-ins for libpapi-dynamic.
