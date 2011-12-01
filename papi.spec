@@ -191,7 +191,7 @@ to compile applications using the PAPI shared libraries.
 %prep
 
 # remove old directory
-rm -rf $RPM_BUILD_DIR/papi
+rm -rf %{_builddir}/papi
 
 ##### PAPI
 
@@ -260,7 +260,7 @@ WITH_RUBY=""
 WITH_RUBY=" --without-ruby"
 %endif
 
-export LDFLAGS="$LDFLAGS -L$RPM_BUILD_DIR/papi/source/libpapi-dynamic/.libs"
+export LDFLAGS="$LDFLAGS -L%{_builddir}/papi/source/libpapi-dynamic/.libs"
 export CFLAGS="$CFLAGS -DDEFAULT_PRINT_SERVICE=\\\"ipp\\\""
 %configure$WITH_APACHE$WITH_RUBY
 make
