@@ -3,8 +3,8 @@
 %define papiversion 1.0
 %define papiextraversion svn-r
 %define papisvnrevision 177
-%define papireleaseno 0.%{papisvnrevision}.6
-%define papirelease %mkrel %papireleaseno
+%define papireleaseno 0.%{papisvnrevision}.7
+%define papirelease %papireleaseno
 %define papimajor 0
 %define libname %mklibname papi %{papimajor}
 %define develname %mklibname papi -d
@@ -364,14 +364,20 @@ cp *.txt ChangeLog INSTALL LICENSE TODO %{buildroot}/%{_docdir}/%{name}-%{versio
 %post -n %{libname}
 # Set up update-alternatives entries
 libversion=`\ls %{_libdir}/libpapi-dynamic.so.* | egrep 'so\.%{papimajor}\.[0-9]+\.[0-9]+$' | perl -p -e 's:^.*\.so\.::'`
-%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-dynamic.so 10 --slave %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-dynamic.so.%{papimajor} --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-dynamic.so.$libversion
-%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-ipp.so 30 --slave %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-ipp.so.%{papimajor} --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-ipp.so.$libversion
-%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-lpd.so 20 --slave %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-lpd.so.%{papimajor} --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-lpd.so.$libversion
+%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-dynamic.so.%{papimajor} 10 --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-dynamic.so.$libversion
+%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-ipp.so.%{papimajor} 30 --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-ipp.so.$libversion
+%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so.%{papimajor} libpapi.so.%{papimajor} %{_libdir}/libpapi-lpd.so.%{papimajor} 20 --slave %{_libdir}/libpapi.so.$libversion libpapi.so.$libversion %{_libdir}/libpapi-lpd.so.$libversion
 
 %if %mdkversion < 200900
 /sbin/ldconfig
 %endif
 
+%post -n %{develname}
+# Set up update-alternatives entries
+libversion=`\ls %{_libdir}/libpapi-dynamic.so.* | egrep 'so\.%{papimajor}\.[0-9]+\.[0-9]+$' | perl -p -e 's:^.*\.so\.::'`
+%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-dynamic.so 10
+%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-ipp.so 30
+%{_sbindir}/update-alternatives --install %{_libdir}/libpapi.so libpapi.so %{_libdir}/libpapi-lpd.so 20
 
 
 %post commands
@@ -390,8 +396,16 @@ libversion=`\ls %{_libdir}/libpapi-dynamic.so.* | egrep 'so\.%{papimajor}\.[0-9]
 %{_sbindir}/update-alternatives --install %{_sbindir}/reject reject %{_sbindir}/reject-papi 100 --slave %{_mandir}/man8/reject.8.lzma reject.8.lzma %{_mandir}/man8/reject-papi.8.lzma
 
 
-
 %preun -n %{libname}
+if [ "$1" = 0 ]; then
+  # Remove update-alternatives entries
+  %{_sbindir}/update-alternatives --remove libpapi.so.%{papimajor} %{_libdir}/libpapi-dynamic.so.%{papimajor}
+  %{_sbindir}/update-alternatives --remove libpapi.so.%{papimajor} %{_libdir}/libpapi-ipp.so.%{papimajor}
+  %{_sbindir}/update-alternatives --remove libpapi.so.%{papimajor} %{_libdir}/libpapi-lpd.so.%{papimajor}
+fi
+
+
+%preun -n %{develname}
 if [ "$1" = 0 ]; then
   # Remove update-alternatives entries
   %{_sbindir}/update-alternatives --remove libpapi.so %{_libdir}/libpapi-dynamic.so
@@ -467,7 +481,6 @@ rm -rf %{buildroot}
 %files -n ruby-papi-devel
 %defattr(-,root,root)
 %{_prefix}/lib*/ruby/site_ruby/*/*/*.so
-%{_prefix}/lib*/ruby/site_ruby/*/*/*.*a
 %endif
 
 %if %{withapache}
@@ -479,10 +492,9 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/lib*.so.*
-%{_libdir}/lib*.so
 
 %files -n %{develname}
 %defattr(-,root,root)
-%{_libdir}/lib*.la
 %{_libdir}/pkgconfig/*
 %{_includedir}/papi
+%{_libdir}/lib*.so
