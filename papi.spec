@@ -482,7 +482,8 @@ rm -rf %{buildroot}
 
 %files -n ruby-papi-devel
 %defattr(-,root,root)
-%{_prefix}/lib*/ruby/site_ruby/*/*/*.so
+%{ruby_sitelibdir}/*/*.so
+#%{_prefix}/lib*/ruby/site_ruby/*/*/*.so
 %endif
 
 %if %{withapache}
