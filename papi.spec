@@ -65,7 +65,6 @@ Patch0:		papi_http.patch
 Patch2:		papi-strndup.patch
 Patch3:		papi-installonce.patch
 
-
 ##### BUILD ROOT
 
 BuildRoot:	%_tmppath/%name-%papiversion-%papirelease-root
@@ -170,8 +169,7 @@ things.
 Ruby bindings for the PAPI libraries
 
 %description -n ruby-papi-devel
-This package contains the .la files for the ruby bindings for
-PAPI. It's likely nobody will ever need these.
+This package contains devel files for the ruby bindings for PAPI.
 %endif
 
 %if %{withapache}
@@ -282,8 +280,10 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 ##### PAPI
 
 %makeinstall \
-	ruby_sitearchdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*/*-linux` \
-	ruby_sitelibdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*`
+	ruby_sitearchdir=%{buildroot}%{ruby_sitearchdir} \
+	ruby_sitelibdir=%{buildroot}%{ruby_sitelibdir}
+#	ruby_sitearchdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*/*-linux` \
+#	ruby_sitelibdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*`
 
 # entry for xinetd (disabled by default)
 install -d %{buildroot}%{_sysconfdir}/xinetd.d
