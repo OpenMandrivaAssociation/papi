@@ -475,8 +475,10 @@ rm -rf %{buildroot}
 %if %{withruby}
 %files -n ruby-papi
 %defattr(-,root,root)
-%{_prefix}/lib*/ruby/site_ruby/*/*.rb
-%{_prefix}/lib*/ruby/site_ruby/*/*/*.so.*
+%{ruby_sitelibdir}/*.rb
+%{ruby_sitelibdir}/*/*.so.*
+#%{_prefix}/lib*/ruby/site_ruby/*/*.rb
+#%{_prefix}/lib*/ruby/site_ruby/*/*/*.so.*
 
 %files -n ruby-papi-devel
 %defattr(-,root,root)
