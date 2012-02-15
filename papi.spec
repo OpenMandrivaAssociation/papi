@@ -3,7 +3,7 @@
 %define papiversion 1.0
 %define papiextraversion svn-r
 %define papisvnrevision 177
-%define papireleaseno 0.%{papisvnrevision}.7
+%define papireleaseno 0.%{papisvnrevision}.8
 %define papirelease %papireleaseno
 %define papimajor 0
 %define libname %mklibname papi %{papimajor}
