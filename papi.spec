@@ -360,6 +360,7 @@ cp README %{buildroot}/%{_docdir}/%{name}-%{version}/README.devel
 cp *.txt ChangeLog INSTALL LICENSE TODO %{buildroot}/%{_docdir}/%{name}-%{version}
 
 
+find %{buildroot} -name \*.la|xargs rm -f
 
 ##### PRE/POSTINSTALL SCRIPTS
 
