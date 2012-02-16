@@ -64,6 +64,7 @@ Patch0:		papi_http.patch
 
 Patch2:		papi-strndup.patch
 Patch3:		papi-installonce.patch
+Patch4:		papi-1.0svn-r177-ruby1.9.patch
 
 ##### BUILD ROOT
 
@@ -198,6 +199,7 @@ rm -rf %{_builddir}/papi
 #patch1 -p0 -b .apache-apr1
 %patch2 -p1
 %patch3 -p1 -b .installonce
+%patch4 -p1 -b .ruby1.9~
 
 # Let other names be used for the libraries, to express that they work all
 # directly as a libpapi and not only as plug-ins for libpapi-dynamic.
