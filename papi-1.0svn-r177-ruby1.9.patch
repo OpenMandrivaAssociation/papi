@@ -1,0 +1,68 @@
+--- papi/configure.in~	2012-02-16 10:58:11.508937825 +0100
++++ papi/configure.in	2012-02-16 10:58:13.298939812 +0100
+@@ -183,16 +183,14 @@ if test "$ruby_available" = "yes"; then
+   changequote(<<, >>)
+   var_list="archdir sitearchdir libdir sitelibdir CFLAGS LIBRUBYARG DLEXT"
+   for var_name in $var_list ; do
+-    rbconfig_tmp=`$rbconfig "print Config::CONFIG['$var_name']"`
++    rbconfig_tmp=`$rbconfig "print RbConfig::CONFIG['$var_name']"`
+     eval "rbconfig_$var_name=\"$rbconfig_tmp\""
+   done
+   changequote([, ])
+ 
+-  RUBY_CFLAGS="$RUBY_CFLAGS -I$rbconfig_archdir "
+-  RUBY_CFLAGS="$RUBY_CFLAGS -I$rbconfig_sitearchdir "
+-  RUBY_CFLAGS="$RUBY_CFLAGS $rbconfig_CFLAGS "
+-  RUBY_LIBS="$rbconfig_LIBRUBYARG"
+-  RUBY_LDFLAGS="-L$rbconfig_libdir"
++  RUBY_CFLAGS="$(pkg-config --cflags ruby-1.9)"
++  RUBY_LIBS="$(pkg-config --libs ruby-1.9)"
++  RUBY_LDFLAGS="$(pkg-config --libs-only-L ruby-1.9)"
+   RUBY_EXT_LDFLAGS="-shrext .$rbconfig_DLEXT"
+ 
+   AC_SUBST(RUBY_CFLAGS)
+--- papi/source/ruby/rb-papi-attribute.c~	2012-02-16 10:57:59.924924956 +0100
++++ papi/source/ruby/rb-papi-attribute.c	2012-02-16 10:58:03.925929401 +0100
+@@ -175,12 +175,12 @@ rb_papi_r2c_attribute(VALUE name, VALUE
+         int i, len;
+ 
+         attr->type = PAPI_COLLECTION;
+-        len = RARRAY(rb_value)->len;
++        len = RARRAY_LEN(rb_value);
+         collection = ALLOC_N(papi_attribute_t *, len);
+         for (i = 0; i < len; i++) {
+             VALUE sub_name, sub_value;
+-            sub_name = rb_ary_entry(RARRAY(rb_value)->ptr[i], 0);
+-            sub_value = rb_ary_entry(RARRAY(rb_value)->ptr[i], 1);
++            sub_name = rb_ary_entry(RARRAY_PTR(rb_value)[i], 0);
++            sub_value = rb_ary_entry(RARRAY_PTR(rb_value)[i], 1);
+             collection[i] = rb_papi_r2c_attribute(sub_name, sub_value);
+         }
+         collection[i] = NULL;
+--- papi/source/ruby/rb-papi.h~	2012-02-16 10:57:52.437916642 +0100
++++ papi/source/ruby/rb-papi.h	2012-02-16 10:57:53.711918058 +0100
+@@ -74,11 +74,11 @@ extern VALUE rb_papi_corresponding_error
+         char **attr;                                            \
+         int i, len;                                             \
+                                                                 \
+-        len = RARRAY(array)->len;                               \
++        len = RARRAY_LEN(array);                               \
+         strary = ALLOCA_N(char *, len + 1);                     \
+         for (i = 0; i < len; i++) {                             \
+             attr = strary + i;                                  \
+-            *attr = StringValueCStr(RARRAY(array)->ptr[i]);     \
++            *attr = StringValueCStr(RARRAY_PTR(array)[i]);     \
+         }                                                       \
+         attr = strary + i;                                      \
+         *attr = NULL;                                           \
+--- papi/source/ruby/rb-papi-job.c~	2012-02-16 10:57:56.141920756 +0100
++++ papi/source/ruby/rb-papi-job.c	2012-02-16 10:57:57.407922161 +0100
+@@ -442,7 +442,7 @@ rb_papi_job_stream_write(VALUE self, VAL
+     rb_papi_status_check(papiJobStreamWrite(RVAL2SERVICE(service),
+                                             RVAL2JS(self),
+                                             StringValueCStr(buffer),
+-                                            RSTRING(buffer)->len));
++                                            RSTRING_LEN(buffer)));
+     return Qnil;
+ }
+ 

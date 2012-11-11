@@ -1,0 +1,81 @@
+diff -p -up papi/source/libpapi-common/uri.c.strndup papi/source/libpapi-common/uri.c
+--- papi/source/libpapi-common/uri.c.strndup	2006-05-16 12:03:52.000000000 +0200
++++ papi/source/libpapi-common/uri.c	2009-09-28 11:27:13.000000000 +0200
+@@ -38,7 +38,7 @@
+ #include "uri.h"
+ 
+ static char *
+-strndup(char *string, size_t length)
++mystrndup(char *string, size_t length)
+ {
+ 	char *result = NULL;
+ 
+@@ -79,7 +79,7 @@ uri_from_string(char *string, uri_t **ur
+ 	if ((*uri = u = calloc(1, sizeof (*u))) == NULL)
+ 		return (-1);
+ 
+-	u->scheme = strndup(string, ptr - string);
++	u->scheme = mystrndup(string, ptr - string);
+ 
+ 	if ((ptr[1] == '/') && (ptr[2] == '/')) {
+ 		/*
+@@ -93,14 +93,14 @@ uri_from_string(char *string, uri_t **ur
+ 		if ((path = end = strchr(string, '/')) == NULL)
+ 			for (end = string; *end != '\0'; end++);
+ 
+-		u->host_part = strndup(string, end - string);
++		u->host_part = mystrndup(string, end - string);
+ 
+ 		for (host = string; host < end; host ++)
+ 			if (*host == '@') {
+ 				/* string to host is the user part */
+-				u->user_part = strndup(string, host-string);
++				u->user_part = mystrndup(string, host-string);
+ 				/* host+1 to end is the host part */
+-				u->host_part = strndup(host + 1,
++				u->host_part = mystrndup(host + 1,
+ 							end - (host+1));
+ 				user = string;
+ 				host++;
+@@ -112,11 +112,11 @@ uri_from_string(char *string, uri_t **ur
+ 
+ 			for (password = user; (password < host - 1); password++)
+ 				if (*password == ':') {
+-					u->password = strndup(password + 1,
++					u->password = mystrndup(password + 1,
+ 							host - password - 2);
+ 					break;
+ 				}
+-			u->user = strndup(user, password - user);
++			u->user = mystrndup(user, password - user);
+ 		} else
+ 			host = string;
+ 
+@@ -128,10 +128,10 @@ uri_from_string(char *string, uri_t **ur
+ 					break;
+ 
+ 			if (port < path) {
+-				u->port = strndup(port + 1, path - port - 1);
++				u->port = mystrndup(port + 1, path - port - 1);
+ 			}
+ 
+-			u->host = strndup(host, port - host);
++			u->host = mystrndup(host, port - host);
+ 		}
+ 
+ 		if (path != NULL) {
+@@ -151,12 +151,12 @@ uri_from_string(char *string, uri_t **ur
+ 
+ 				fragment = strrchr(name, '#');
+ 				if ((fragment != NULL) && (*fragment != '\0')) {
+-					u->fragment = strndup(fragment + 1,
++					u->fragment = mystrndup(fragment + 1,
+ 							end - fragment - 1);
+ 					end = fragment;
+ 				}
+ 
+-				u->path = strndup(path, end - path);
++				u->path = mystrndup(path, end - path);
+ 			}
+ 		}
+ 	} else {	/* scheme:scheme_part */
