@@ -23,6 +23,7 @@
 
 #define _unpackaged_files_terminate_build       0 
 #define _missing_doc_files_terminate_build      0
+%define	debug_package %{nil}
 
 Summary:	FSG OpenPrinting PAPI Implementation(s) and Applications
 Name:		papi
