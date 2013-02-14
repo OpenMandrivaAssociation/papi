@@ -1,0 +1,11 @@
+--- papi/source/libpapi-dynamic/nss/nss-nis.c.orig	2013-02-14 01:32:30.748735995 +0000
++++ papi/source/libpapi-dynamic/nss/nss-nis.c	2013-02-14 01:32:45.344733147 +0000
+@@ -27,7 +27,7 @@
+ #include <ctype.h>
+ #include <errno.h>
+ #include <string.h>
+-#include <rpcsvc/yp.h>
++#include <rpcsvc/nis.h>
+ #include <rpcsvc/ypclnt.h>
+ 
+ #include <pthread.h>
