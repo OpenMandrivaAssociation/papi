@@ -15,9 +15,9 @@
 -  RUBY_CFLAGS="$RUBY_CFLAGS $rbconfig_CFLAGS "
 -  RUBY_LIBS="$rbconfig_LIBRUBYARG"
 -  RUBY_LDFLAGS="-L$rbconfig_libdir"
-+  RUBY_CFLAGS="$(pkg-config --cflags ruby-1.9)"
-+  RUBY_LIBS="$(pkg-config --libs ruby-1.9)"
-+  RUBY_LDFLAGS="$(pkg-config --libs-only-L ruby-1.9)"
++  RUBY_CFLAGS="$(pkg-config --cflags ruby)"
++  RUBY_LIBS="$(pkg-config --libs ruby)"
++  RUBY_LDFLAGS="$(pkg-config --libs-only-L ruby)"
    RUBY_EXT_LDFLAGS="-shrext .$rbconfig_DLEXT"
  
    AC_SUBST(RUBY_CFLAGS)

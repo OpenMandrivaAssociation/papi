@@ -28,7 +28,7 @@
 Summary:	FSG OpenPrinting PAPI Implementation(s) and Applications
 Name:		papi
 Version:	1.0
-Release:	0.%{papisvnrevision}.11
+Release:	0.%{papisvnrevision}.12
 License:	GPLv2/LPGLv2/MIT/CDDL
 Group:		System/Servers
 Requires:	update-alternatives
@@ -181,6 +181,8 @@ export CFLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 export CXXFLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 %endif
+export CC=gcc
+export GCC=g++
 
 # We have a Subversion version and also have heavily manipulated the
 # Makefile.am files, so we must re-generate "configure"
@@ -214,8 +216,6 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 %makeinstall \
 	ruby_sitearchdir=%{buildroot}%{ruby_sitearchdir} \
 	ruby_sitelibdir=%{buildroot}%{ruby_sitelibdir}
-#	ruby_sitearchdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*/*-linux` \
-#	ruby_sitelibdir=%{buildroot}`ls -d %{_prefix}/lib*/ruby/site_ruby/*`
 
 # entry for xinetd (disabled by default)
 install -d %{buildroot}%{_sysconfdir}/xinetd.d
@@ -378,13 +378,10 @@ fi
 %if %{withruby}
 %files -n ruby-papi
 %{ruby_sitelibdir}/*.rb
-%{ruby_sitelibdir}/*/*.so.*
-#%{_prefix}/lib*/ruby/site_ruby/*/*.rb
-#%{_prefix}/lib*/ruby/site_ruby/*/*/*.so.*
+%{ruby_sitearchdir}/*.so.*
 
 %files -n ruby-papi-devel
-%{ruby_sitelibdir}/*/*.so
-#%{_prefix}/lib*/ruby/site_ruby/*/*/*.so
+%{ruby_sitearchdir}/*.so
 %endif
 
 %if %{withapache}
