@@ -28,7 +28,7 @@
 Summary:	FSG OpenPrinting PAPI Implementation(s) and Applications
 Name:		papi
 Version:	1.0
-Release:	0.%{papisvnrevision}.12
+Release:	0.%{papisvnrevision}.13
 License:	GPLv2/LPGLv2/MIT/CDDL
 Group:		System/Servers
 Requires:	update-alternatives
