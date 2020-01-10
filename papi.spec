@@ -141,7 +141,7 @@ to compile applications using the PAPI shared libraries.
 
 %prep
 %setup -qn papi
-%apply_patches
+%autopatch -p1
 
 # Let other names be used for the libraries, to express that they work all
 # directly as a libpapi and not only as plug-ins for libpapi-dynamic.
