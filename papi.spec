@@ -32,7 +32,7 @@ Release:	0.%{papisvnrevision}.13
 License:	GPLv2/LPGLv2/MIT/CDDL
 Group:		System/Servers
 Requires:	update-alternatives
-Url:		http://openprinting.sourceforge.net/
+Url:		https://openprinting.sourceforge.net/
 Source0:	http://sourceforge.net/projects/openprinting/papi-%{version}%{papiextraversion}%{papisvnrevision}.tar.bz2
 Patch0:		papi_http.patch
 Patch1:		papi-yp_h.patch
