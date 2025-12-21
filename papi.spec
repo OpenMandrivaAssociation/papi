@@ -41,6 +41,11 @@ Patch3:		papi-installonce.patch
 Patch4:		papi-1.0svn-r177-ruby1.9.patch
 
 %if %{withapache}
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	apache-devel
 %endif
 %if %{withruby}
